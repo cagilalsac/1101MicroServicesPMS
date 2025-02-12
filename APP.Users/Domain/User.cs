@@ -25,15 +25,15 @@ namespace APP.Users.Domain
         public DateTime? RegistrationDate { get; set; }
 
         public int RoleId { get; set; }
-        public Role _Role { get; set; }
+        public Role Role { get; set; }
 
-        public List<UserSkill> _UserSkills { get; set; } = new List<UserSkill>();
+        public List<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
 
         [NotMapped]
         public List<int> SkillIds 
         { 
-            get => _UserSkills.Select(us => us.SkillId).ToList();
-            set => _UserSkills = value.Select(v => new UserSkill() { SkillId = v }).ToList(); 
+            get => UserSkills.Select(us => us.SkillId).ToList();
+            set => UserSkills = value.Select(v => new UserSkill() { SkillId = v }).ToList(); 
         }
     }
 }

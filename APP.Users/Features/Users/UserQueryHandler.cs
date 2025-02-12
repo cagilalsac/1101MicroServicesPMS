@@ -35,7 +35,7 @@ namespace APP.Users.Features.Users
 
         public Task<IQueryable<UserQueryResponse>> Handle(UserQueryRequest request, CancellationToken cancellationToken)
         {
-            var query = _db.Users.Include(u => u._Role).Include(u => u._UserSkills).ThenInclude(us => us._Skill)
+            var query = _db.Users.Include(u => u.Role).Include(u => u.UserSkills).ThenInclude(us => us.Skill)
                 .OrderBy(u => u.Name).Select(u => new UserQueryResponse()
             {
                 Id = u.Id,
@@ -44,17 +44,17 @@ namespace APP.Users.Features.Users
                 IsActive = u.IsActive,
                 IsActiveF = u.IsActive ? "Active" : "Inactive",
                 Password = u.Password,
-                Role = u._Role.Name,
+                Role = u.Role.Name,
                 Surname = u.Surname,
                 UserName = u.UserName,
                 RegistrationDate = u.RegistrationDate,
                 RegistrationDateF = u.RegistrationDate.HasValue ? u.RegistrationDate.Value.ToString("MM/dd/yyyy") : string.Empty,
                 RoleId = u.RoleId,
                 SkillIds = u.SkillIds,
-                Skills = u._UserSkills.Select(us => new SkillQueryResponse()
+                Skills = u.UserSkills.Select(us => new SkillQueryResponse()
                 {
-                    Id = us._Skill.Id,
-                    Name = us._Skill.Name
+                    Id = us.Skill.Id,
+                    Name = us.Skill.Name
                 }).ToList()
             });
             return Task.FromResult(query);

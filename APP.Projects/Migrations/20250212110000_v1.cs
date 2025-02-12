@@ -88,29 +88,6 @@ namespace APP.Projects.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UserWorks",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
-                    Url = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    Percentage = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    WorkId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserWorks", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserWorks_Works_WorkId",
-                        column: x => x.WorkId,
-                        principalTable: "Works",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectTags_ProjectId",
                 table: "ProjectTags",
@@ -120,11 +97,6 @@ namespace APP.Projects.Migrations
                 name: "IX_ProjectTags_TagId",
                 table: "ProjectTags",
                 column: "TagId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserWorks_WorkId",
-                table: "UserWorks",
-                column: "WorkId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Works_ProjectId",
@@ -139,13 +111,10 @@ namespace APP.Projects.Migrations
                 name: "ProjectTags");
 
             migrationBuilder.DropTable(
-                name: "UserWorks");
+                name: "Works");
 
             migrationBuilder.DropTable(
                 name: "Tags");
-
-            migrationBuilder.DropTable(
-                name: "Works");
 
             migrationBuilder.DropTable(
                 name: "Projects");

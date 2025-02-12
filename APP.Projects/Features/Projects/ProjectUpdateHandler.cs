@@ -34,10 +34,10 @@ namespace APP.Projects.Features.Projects
         {
             if (_db.Projects.Any(p => p.Id != request.Id && p.Name == request.Name))
                 return Error("Project with the same name exists!");
-            var project = _db.Projects.Include(p => p._ProjectTags).SingleOrDefault(p => p.Id == request.Id);
+            var project = _db.Projects.Include(p => p.ProjectTags).SingleOrDefault(p => p.Id == request.Id);
             if (project is null)
                 return Error("Project not found!");
-            _db.ProjectTags.RemoveRange(project._ProjectTags);
+            _db.ProjectTags.RemoveRange(project.ProjectTags);
             project.Description = request.Description;
             project.Name = request.Name;
             project.Url = request.Url;

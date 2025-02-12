@@ -9,7 +9,6 @@ namespace APP.Projects.Domain
         public DbSet<Tag> Tags { get; set; }
         public DbSet<ProjectTag> ProjectTags { get; set; }
         public DbSet<Work> Works { get; set; }
-        public DbSet<UserWork> UserWorks { get; set; }
 
         public ProjectsDb(DbContextOptions options) : base(options)
         {

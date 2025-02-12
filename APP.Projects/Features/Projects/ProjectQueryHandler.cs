@@ -28,7 +28,7 @@ namespace APP.Projects.Features.Projects
 
         public Task<IQueryable<ProjectQueryResponse>> Handle(ProjectQueryRequest request, CancellationToken cancellationToken)
         {
-            var query = _db.Projects.Include(p => p._ProjectTags).ThenInclude(pt => pt._Tag)
+            var query = _db.Projects.Include(p => p.ProjectTags).ThenInclude(pt => pt.Tag)
                 .OrderBy(p => p.Name).ThenByDescending(p => p.Version).Select(p => new ProjectQueryResponse()
             {
                 Description = p.Description,
@@ -38,7 +38,7 @@ namespace APP.Projects.Features.Projects
                 Url = p.Url,
                 Version = p.Version,
                 VersionF = p.Version.HasValue ? "v" + p.Version.Value.ToString("N1") : null,
-                Tags = string.Join(", ", p._ProjectTags.Select(pt => pt._Tag.Name))
+                Tags = string.Join(", ", p.ProjectTags.Select(pt => pt.Tag.Name))
             });
             return Task.FromResult(query);
         }

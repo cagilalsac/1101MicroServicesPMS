@@ -8,6 +8,6 @@ namespace APP.Users.Domain
         [Required, StringLength(125)]
         public string Name { get; set; }
 
-        public List<UserSkill> _UserSkills { get; set; } = new List<UserSkill>();
+        public List<UserSkill> UserSkills { get; set; } = new List<UserSkill>();
     }
 }

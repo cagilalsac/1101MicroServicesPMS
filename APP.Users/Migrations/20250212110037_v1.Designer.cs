@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace APP.Users.Migrations
 {
     [DbContext(typeof(UsersDb))]
-    [Migration("20250124164948_v1")]
+    [Migration("20250212110037_v1")]
     partial class v1
     {
         /// <inheritdoc />
@@ -128,47 +128,47 @@ namespace APP.Users.Migrations
 
             modelBuilder.Entity("APP.Users.Domain.User", b =>
                 {
-                    b.HasOne("APP.Users.Domain.Role", "_Role")
-                        .WithMany("_Users")
+                    b.HasOne("APP.Users.Domain.Role", "Role")
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("_Role");
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("APP.Users.Domain.UserSkill", b =>
                 {
-                    b.HasOne("APP.Users.Domain.Skill", "_Skill")
-                        .WithMany("_UserSkills")
+                    b.HasOne("APP.Users.Domain.Skill", "Skill")
+                        .WithMany("UserSkills")
                         .HasForeignKey("SkillId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("APP.Users.Domain.User", "_User")
-                        .WithMany("_UserSkills")
+                    b.HasOne("APP.Users.Domain.User", "User")
+                        .WithMany("UserSkills")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("_Skill");
+                    b.Navigation("Skill");
 
-                    b.Navigation("_User");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("APP.Users.Domain.Role", b =>
                 {
-                    b.Navigation("_Users");
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("APP.Users.Domain.Skill", b =>
                 {
-                    b.Navigation("_UserSkills");
+                    b.Navigation("UserSkills");
                 });
 
             modelBuilder.Entity("APP.Users.Domain.User", b =>
                 {
-                    b.Navigation("_UserSkills");
+                    b.Navigation("UserSkills");
                 });
 #pragma warning restore 612, 618
         }

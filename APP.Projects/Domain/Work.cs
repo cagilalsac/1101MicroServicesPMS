@@ -17,8 +17,6 @@ namespace APP.Projects.Domain
 
         public int? ProjectId { get; set; }
 
-        public Project _Project { get; set; }
-
-        public List<UserWork> _UserWorks { get; set; } = new List<UserWork>();
+        public Project Project { get; set; }
     }
 }

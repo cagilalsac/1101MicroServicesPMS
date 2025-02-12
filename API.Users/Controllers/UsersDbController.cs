@@ -50,7 +50,7 @@ namespace API.Users.Controllers
             _db.Roles.Add(new Role()
             {
                 Name = "Admin",
-                _Users = new List<User>()
+                Users = new List<User>()
                 {
                     new User()
                     {
@@ -60,7 +60,7 @@ namespace API.Users.Controllers
                         Surname = "Alsaç",
                         UserName = "admin",
                         RegistrationDate = new DateTime(2025, 01, 13),
-                        _UserSkills = new List<UserSkill>()
+                        UserSkills = new List<UserSkill>()
                         {
                             new UserSkill()
                             {
@@ -77,7 +77,7 @@ namespace API.Users.Controllers
             _db.Roles.Add(new Role()
             {
                 Name = "User",
-                _Users = new List<User>()
+                Users = new List<User>()
                 {
                     new User()
                     {

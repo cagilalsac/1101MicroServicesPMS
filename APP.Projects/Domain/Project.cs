@@ -20,12 +20,12 @@ namespace APP.Projects.Domain
         [NotMapped]
         public List<int> TagIds
         {
-            get => _ProjectTags.Select(pt => pt.TagId).ToList();
-            set => _ProjectTags = value.Select(v => new ProjectTag() { TagId = v }).ToList();
+            get => ProjectTags.Select(pt => pt.TagId).ToList();
+            set => ProjectTags = value.Select(v => new ProjectTag() { TagId = v }).ToList();
         }
 
-        public List<Work> _Works { get; set; } = new List<Work>();
+        public List<Work> Works { get; set; } = new List<Work>();
 
-        public List<ProjectTag> _ProjectTags { get; set; } = new List<ProjectTag>();
+        public List<ProjectTag> ProjectTags { get; set; } = new List<ProjectTag>();
     }
 }

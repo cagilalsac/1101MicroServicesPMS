@@ -9,6 +9,6 @@ namespace APP.Projects.Domain
         [StringLength(150)]
         public string Name { get; set; }
 
-        public List<ProjectTag> _ProjectTags { get; set; } = new List<ProjectTag>();
+        public List<ProjectTag> ProjectTags { get; set; } = new List<ProjectTag>();
     }
 }

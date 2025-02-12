@@ -38,14 +38,14 @@ namespace APP.Users.Features.Users
 
         public async Task<TokenCreateResponse> Handle(TokenCreateRequest request, CancellationToken cancellationToken)
         {
-            var user = await _db.Users.Include(u => u._Role)
+            var user = await _db.Users.Include(u => u.Role)
                 .SingleOrDefaultAsync(u => u.UserName == request.UserName && u.Password == request.Password && u.IsActive);
             if (user is null)
                 return new TokenCreateResponse(false, "Active user with the user name and password not found!");
             var claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Role, user._Role.Name),
+                new Claim(ClaimTypes.Role, user.Role.Name),
                 new Claim("Id", user.Id.ToString())
             };
             var signingKey = AppSettings.SigningKey;

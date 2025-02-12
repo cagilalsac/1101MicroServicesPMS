@@ -9,6 +9,6 @@ namespace APP.Users.Domain
         [StringLength(10)]
         public string Name { get; set; }
 
-        public List<User> _Users { get; set; } = new List<User>();
+        public List<User> Users { get; set; } = new List<User>();
     }
 }

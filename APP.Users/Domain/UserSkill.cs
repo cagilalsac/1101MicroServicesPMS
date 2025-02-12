@@ -7,7 +7,7 @@ namespace APP.Users.Domain
         public int UserId { get; set; }
         public int SkillId { get; set; }
 
-        public User _User { get; set; }
-        public Skill _Skill { get; set; }
+        public User User { get; set; }
+        public Skill Skill { get; set; }
     }
 }

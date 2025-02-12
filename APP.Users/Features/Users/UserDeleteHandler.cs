@@ -17,10 +17,10 @@ namespace APP.Users.Features.Users
 
         public async Task<CommandResponse> Handle(UserDeleteRequest request, CancellationToken cancellationToken)
         {
-            var user = _db.Users.Include(u => u._UserSkills).SingleOrDefault(u => u.Id == request.Id);
+            var user = _db.Users.Include(u => u.UserSkills).SingleOrDefault(u => u.Id == request.Id);
             if (user is null)
                 return Error("User not found!");
-            _db.UserSkills.RemoveRange(user._UserSkills);
+            _db.UserSkills.RemoveRange(user.UserSkills);
             _db.Users.Remove(user);
             await _db.SaveChangesAsync(cancellationToken);
             return Success("User deleted successfully", user.Id);

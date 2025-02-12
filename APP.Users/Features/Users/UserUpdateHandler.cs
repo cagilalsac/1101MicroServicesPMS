@@ -41,10 +41,10 @@ namespace APP.Users.Features.Users
         {
             if (_db.Users.Any(u => u.Id != request.Id && (u.UserName == request.UserName || (u.Name == request.Name && u.Surname == request.Surname))))
                 return Error("User with the same user name or full name exists!");
-            var user = _db.Users.Include(u => u._UserSkills).SingleOrDefault(u => u.Id == request.Id);
+            var user = _db.Users.Include(u => u.UserSkills).SingleOrDefault(u => u.Id == request.Id);
             if (user is null)
                 return Error("User not found!");
-            _db.UserSkills.RemoveRange(user._UserSkills);
+            _db.UserSkills.RemoveRange(user.UserSkills);
             user.IsActive = request.IsActive;
             user.Name = request.Name;
             user.Password = request.Password;

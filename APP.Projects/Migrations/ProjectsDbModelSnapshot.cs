@@ -91,39 +91,6 @@ namespace APP.Projects.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("APP.Projects.Domain.UserWork", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Percentage")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Url")
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(75)
-                        .HasColumnType("nvarchar(75)");
-
-                    b.Property<int>("WorkId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WorkId");
-
-                    b.ToTable("UserWorks");
-                });
-
             modelBuilder.Entity("APP.Projects.Domain.Work", b =>
                 {
                     b.Property<int>("Id")
@@ -158,58 +125,42 @@ namespace APP.Projects.Migrations
 
             modelBuilder.Entity("APP.Projects.Domain.ProjectTag", b =>
                 {
-                    b.HasOne("APP.Projects.Domain.Project", "_Project")
-                        .WithMany("_ProjectTags")
+                    b.HasOne("APP.Projects.Domain.Project", "Project")
+                        .WithMany("ProjectTags")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("APP.Projects.Domain.Tag", "_Tag")
-                        .WithMany("_ProjectTags")
+                    b.HasOne("APP.Projects.Domain.Tag", "Tag")
+                        .WithMany("ProjectTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("_Project");
+                    b.Navigation("Project");
 
-                    b.Navigation("_Tag");
-                });
-
-            modelBuilder.Entity("APP.Projects.Domain.UserWork", b =>
-                {
-                    b.HasOne("APP.Projects.Domain.Work", "_Work")
-                        .WithMany("_UserWorks")
-                        .HasForeignKey("WorkId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("_Work");
+                    b.Navigation("Tag");
                 });
 
             modelBuilder.Entity("APP.Projects.Domain.Work", b =>
                 {
-                    b.HasOne("APP.Projects.Domain.Project", "_Project")
-                        .WithMany("_Works")
+                    b.HasOne("APP.Projects.Domain.Project", "Project")
+                        .WithMany("Works")
                         .HasForeignKey("ProjectId");
 
-                    b.Navigation("_Project");
+                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("APP.Projects.Domain.Project", b =>
                 {
-                    b.Navigation("_ProjectTags");
+                    b.Navigation("ProjectTags");
 
-                    b.Navigation("_Works");
+                    b.Navigation("Works");
                 });
 
             modelBuilder.Entity("APP.Projects.Domain.Tag", b =>
                 {
-                    b.Navigation("_ProjectTags");
-                });
-
-            modelBuilder.Entity("APP.Projects.Domain.Work", b =>
-                {
-                    b.Navigation("_UserWorks");
+                    b.Navigation("ProjectTags");
                 });
 #pragma warning restore 612, 618
         }

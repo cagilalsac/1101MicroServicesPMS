@@ -17,10 +17,10 @@ namespace APP.Users.Features.Roles
 
         public async Task<CommandResponse> Handle(RoleDeleteRequest request, CancellationToken cancellationToken)
         {
-            var role = _db.Roles.Include(r => r._Users).SingleOrDefault(r => r.Id == request.Id);
+            var role = _db.Roles.Include(r => r.Users).SingleOrDefault(r => r.Id == request.Id);
             if (role is null)
                 return Error("Role not found!");
-            if (role._Users.Count > 0)
+            if (role.Users.Count > 0)
                 return Error("Role can't be deleted becuase it has relational users!");
             _db.Roles.Remove(role);
             await _db.SaveChangesAsync(cancellationToken);

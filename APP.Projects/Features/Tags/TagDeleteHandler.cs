@@ -17,10 +17,10 @@ namespace APP.Projects.Features.Tags
 
         public async Task<CommandResponse> Handle(TagDeleteRequest request, CancellationToken cancellationToken)
         {
-            Tag tag = _db.Tags.Include(t => t._ProjectTags).SingleOrDefault(t => t.Id == request.Id);
+            Tag tag = _db.Tags.Include(t => t.ProjectTags).SingleOrDefault(t => t.Id == request.Id);
             if (tag is null)
                 return Error("Tag not found!");
-            _db.ProjectTags.RemoveRange(tag._ProjectTags);
+            _db.ProjectTags.RemoveRange(tag.ProjectTags);
             _db.Tags.Remove(tag);
             await _db.SaveChangesAsync(cancellationToken);
             return Success("Tag deleted successfully", tag.Id);

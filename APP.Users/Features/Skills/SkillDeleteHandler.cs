@@ -17,10 +17,10 @@ namespace APP.Users.Features.Skills
 
         public async Task<CommandResponse> Handle(SkillDeleteRequest request, CancellationToken cancellationToken)
         {
-            var skill = _db.Skills.Include(s => s._UserSkills).SingleOrDefault(s => s.Id == request.Id);
+            var skill = _db.Skills.Include(s => s.UserSkills).SingleOrDefault(s => s.Id == request.Id);
             if (skill is null)
                 return Error("Skill not found!");
-            _db.UserSkills.RemoveRange(skill._UserSkills);
+            _db.UserSkills.RemoveRange(skill.UserSkills);
             _db.Skills.Remove(skill);
             await _db.SaveChangesAsync(cancellationToken);
             return Success("Skill deleted successfully", skill.Id);

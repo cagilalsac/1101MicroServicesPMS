@@ -33,7 +33,6 @@ namespace API.Projects.Controllers
             {
                 _db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('ProjectTags', RESEED, 0)");
                 _db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('Tags', RESEED, 0)");
-                _db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('UserWorks', RESEED, 0)");
                 _db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('Works', RESEED, 0)");
                 _db.Database.ExecuteSqlRaw("dbcc CHECKIDENT ('Projects', RESEED, 0)");
             }
@@ -103,6 +102,21 @@ namespace API.Projects.Controllers
                     {
                         TagId = _db.Tags.SingleOrDefault(t => t.Name == "Clean Architecture").Id
                     }
+                },
+                Works = new List<Work>()
+                {
+                    new Work()
+                    {
+                        Name = "Preperation of lecture notes",
+                        StartDate = DateTime.Now.AddMonths(-12),
+                        DueDate = DateTime.Now.AddMonths(-8)
+                    },
+                    new Work()
+                    {
+                        Name = "Preperation of lecture project demo",
+                        StartDate = DateTime.Now.AddMonths(-7),
+                        DueDate = DateTime.Now.AddMonths(-1)
+                    }
                 }
             });
             _db.Projects.Add(new Project()
@@ -134,6 +148,27 @@ namespace API.Projects.Controllers
                     new ProjectTag()
                     {
                         TagId = _db.Tags.SingleOrDefault(t => t.Name == "N-Layered Architecture").Id
+                    }
+                },
+                Works = new List<Work>()
+                {
+                    new Work()
+                    {
+                        Name = "Preperation of lecture notes",
+                        StartDate = DateTime.Now.AddMonths(-24),
+                        DueDate = DateTime.Now.AddMonths(-20)
+                    },
+                    new Work()
+                    {
+                        Name = "Preperation of lecture project demo",
+                        StartDate = DateTime.Now.AddMonths(-18),
+                        DueDate = DateTime.Now.AddMonths(-16)
+                    },
+                    new Work()
+                    {
+                        Name = "Lecture project demo publish",
+                        StartDate = DateTime.Now.AddMonths(-15),
+                        DueDate = DateTime.Now.AddMonths(-14)
                     }
                 }
             });

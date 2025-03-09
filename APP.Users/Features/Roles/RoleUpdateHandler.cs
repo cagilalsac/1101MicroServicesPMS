@@ -25,7 +25,7 @@ namespace APP.Users.Features.Roles
             var role = _db.Roles.Find(request.Id);
             if (role is null)
                 return Error("Role not found!");
-            role.Name = request.Name;
+            role.Name = request.Name?.Trim();
             _db.Roles.Update(role);
             await _db.SaveChangesAsync(cancellationToken);
             return Success("Role updated successfully.", role.Id);

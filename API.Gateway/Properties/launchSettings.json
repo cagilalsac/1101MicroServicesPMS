@@ -3,7 +3,7 @@
     "https": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/projects",
+      "launchUrl": "api/projects/gateway",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

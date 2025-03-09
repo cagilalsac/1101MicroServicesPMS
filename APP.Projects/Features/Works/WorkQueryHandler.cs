@@ -19,6 +19,7 @@ namespace APP.Projects.Features.Works
         public DateTime DueDate { get; set; }
         public string DueDateF { get; set; }
         public int? ProjectId { get; set; }
+        public string ProjectName { get; set; }
         public ProjectQueryResponse Project { get; set; }
     }
 
@@ -50,6 +51,7 @@ namespace APP.Projects.Features.Works
                     Version = w.Project.Version
                 } : null,
                 ProjectId = w.ProjectId,
+                ProjectName = w.Project.Name,
                 StartDate = w.StartDate,
                 StartDateF = w.StartDate.ToShortDateString()
             });

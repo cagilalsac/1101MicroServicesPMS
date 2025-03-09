@@ -43,10 +43,10 @@ namespace APP.Users.Features.Users
             var user = new User()
             {
                 IsActive = request.IsActive,
-                Name = request.Name,
+                Name = request.Name?.Trim(),
                 Password = request.Password,
                 RoleId = request.RoleId,
-                Surname = request.Surname,
+                Surname = request.Surname?.Trim(),
                 UserName = request.UserName,
                 RegistrationDate = request.RegistrationDate,
                 SkillIds = request.SkillIds

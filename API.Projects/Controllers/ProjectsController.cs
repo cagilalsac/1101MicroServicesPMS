@@ -11,6 +11,7 @@ namespace API.Projects.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProjectsController : ControllerBase
     {
         private readonly ILogger<ProjectsController> _logger;
@@ -20,6 +21,14 @@ namespace API.Projects.Controllers
         {
             _logger = logger;
             _mediator = mediator;
+        }
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public IActionResult Gateway()
+        {
+            return Ok("Projects Gateway");
         }
 
         // GET: api/Projects

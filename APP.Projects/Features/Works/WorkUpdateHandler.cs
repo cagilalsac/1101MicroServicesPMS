@@ -32,14 +32,14 @@ namespace APP.Projects.Features.Works
             if (_db.Works.Any(w => w.Id != request.Id && w.Name == request.Name
                 && (w.ProjectId ?? 0) == (request.ProjectId ?? 0)))
                 return Error("Work with the same name exists for the project!");
-            if (request.StartDate.Date >= request.DueDate.Date)
-                return Error("Start date must be before due date!");
+            if (request.StartDate.Date > request.DueDate.Date)
+                return Error("Start date must be before or equal to due date!");
             var work = _db.Works.SingleOrDefault(w => w.Id == request.Id);
             if (work is null)
                 return Error("Work not found!");
-            work.Description = request.Description;
+            work.Description = request.Description?.Trim();
             work.DueDate = request.DueDate;
-            work.Name = request.Name;
+            work.Name = request.Name?.Trim();
             work.ProjectId = request.ProjectId;
             work.StartDate = request.StartDate;
             _db.Works.Update(work);

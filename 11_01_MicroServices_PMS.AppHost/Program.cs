@@ -6,4 +6,6 @@ builder.AddProject<Projects.API_Users>("api-users");
 
 builder.AddProject<Projects.API_Gateway>("api-gateway");
 
+builder.AddProject<Projects.API_UserWorks>("api-userworks");
+
 builder.Build().Run();

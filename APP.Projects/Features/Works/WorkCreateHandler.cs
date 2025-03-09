@@ -31,13 +31,13 @@ namespace APP.Projects.Features.Works
         {
             if (_db.Works.Any(w => w.Name == request.Name && (w.ProjectId ?? 0) == (request.ProjectId ?? 0)))
                 return Error("Work with the same name exists for the project!");
-            if (request.StartDate.Date >= request.DueDate.Date)
-                return Error("Start date must be before due date!");
+            if (request.StartDate.Date > request.DueDate.Date)
+                return Error("Start date must be before or equal to due date!");
             var work = new Work()
             {
-                Description = request.Description,
+                Description = request.Description?.Trim(),
                 DueDate = request.DueDate,
-                Name = request.Name,
+                Name = request.Name?.Trim(),
                 ProjectId = request.ProjectId,
                 StartDate = request.StartDate
             };

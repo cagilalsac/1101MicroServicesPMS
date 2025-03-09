@@ -24,7 +24,7 @@ namespace APP.Projects.Features.Tags
                 return Error("Tag with the same name exists!");
             Tag tag = new Tag()
             {
-                Name = request.Name
+                Name = request.Name?.Trim()
             };
             _db.Tags.Add(tag);
             await _db.SaveChangesAsync(cancellationToken);

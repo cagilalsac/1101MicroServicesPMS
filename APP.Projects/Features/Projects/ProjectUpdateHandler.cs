@@ -38,9 +38,9 @@ namespace APP.Projects.Features.Projects
             if (project is null)
                 return Error("Project not found!");
             _db.ProjectTags.RemoveRange(project.ProjectTags);
-            project.Description = request.Description;
-            project.Name = request.Name;
-            project.Url = request.Url;
+            project.Description = request.Description?.Trim();
+            project.Name = request.Name?.Trim();
+            project.Url = request.Url?.Trim();
             project.Version = request.Version;
             project.TagIds = request.TagIds;
             _db.Projects.Update(project);

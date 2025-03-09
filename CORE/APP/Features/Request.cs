@@ -4,5 +4,5 @@ namespace CORE.APP.Features
 {
 	public abstract class Request : Entity
 	{
-	}
+    }
 }

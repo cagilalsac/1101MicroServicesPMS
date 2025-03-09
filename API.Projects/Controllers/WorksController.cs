@@ -11,7 +11,7 @@ namespace API.Projects.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class WorksController : ControllerBase
     {
         private readonly ILogger<WorksController> _logger;
@@ -25,7 +25,6 @@ namespace API.Projects.Controllers
 
         // GET: api/Works
         [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             try
@@ -45,7 +44,6 @@ namespace API.Projects.Controllers
 
         // GET: api/Works/5
         [HttpGet("{id}")]
-        [AllowAnonymous]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -65,6 +63,7 @@ namespace API.Projects.Controllers
 
 		// POST: api/Works
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Post(WorkCreateRequest request)
         {
             try
@@ -90,6 +89,7 @@ namespace API.Projects.Controllers
 
         // PUT: api/Works
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Put(WorkUpdateRequest request)
         {
             try
@@ -115,6 +115,7 @@ namespace API.Projects.Controllers
 
         // DELETE: api/Works/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             try

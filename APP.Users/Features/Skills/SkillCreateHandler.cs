@@ -23,7 +23,7 @@ namespace APP.Users.Features.Skills
                 return Error("Skill with the same name exists!");
             var skill = new Skill()
             {
-                Name = request.Name
+                Name = request.Name?.Trim()
             };
             _db.Skills.Add(skill);
             await _db.SaveChangesAsync(cancellationToken);

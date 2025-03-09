@@ -12,7 +12,7 @@ namespace API.Users.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         private readonly ILogger<UsersController> _logger;
@@ -22,6 +22,14 @@ namespace API.Users.Controllers
         {
             _logger = logger;
             _mediator = mediator;
+        }
+
+        [HttpGet("[action]")]
+        [AllowAnonymous]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public IActionResult Gateway()
+        {
+            return Ok("Users Gateway");
         }
 
         // GET: api/Users
@@ -64,6 +72,7 @@ namespace API.Users.Controllers
 
 		// POST: api/Users
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Post(UserCreateRequest request)
         {
             try
@@ -89,6 +98,7 @@ namespace API.Users.Controllers
 
         // PUT: api/Users
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Put(UserUpdateRequest request)
         {
             try
@@ -114,6 +124,7 @@ namespace API.Users.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int id)
         {
             try

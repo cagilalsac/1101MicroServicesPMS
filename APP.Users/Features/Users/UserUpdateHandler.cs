@@ -46,10 +46,10 @@ namespace APP.Users.Features.Users
                 return Error("User not found!");
             _db.UserSkills.RemoveRange(user.UserSkills);
             user.IsActive = request.IsActive;
-            user.Name = request.Name;
+            user.Name = request.Name?.Trim();
             user.Password = request.Password;
             user.RoleId = request.RoleId;
-            user.Surname = request.Surname;
+            user.Surname = request.Surname?.Trim();
             user.UserName = request.UserName;
             user.RegistrationDate = request.RegistrationDate;
             user.SkillIds = request.SkillIds;

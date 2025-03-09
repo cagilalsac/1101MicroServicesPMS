@@ -24,7 +24,7 @@ namespace APP.Users.Features.Skills
             var skill = _db.Skills.Find(request.Id);
             if (skill is null)
                 return Error("Skill not found!");
-            skill.Name = request.Name;
+            skill.Name = request.Name?.Trim();
             _db.Skills.Update(skill);
             await _db.SaveChangesAsync(cancellationToken);
             return Success("Skill updated successfully.", skill.Id);

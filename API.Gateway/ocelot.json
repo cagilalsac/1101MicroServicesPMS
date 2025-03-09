@@ -59,6 +59,18 @@
       ],
       "UpstreamPathTemplate": "/api/roles/{id}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/userworks/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7120
+        }
+      ],
+      "UpstreamPathTemplate": "/api/userworks/{id}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     }
   ],
   "GlobalConfiguration": {

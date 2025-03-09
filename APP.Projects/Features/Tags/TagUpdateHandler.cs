@@ -25,7 +25,7 @@ namespace APP.Projects.Features.Tags
             Tag tag = _db.Tags.Find(request.Id);
             if (tag is null)
                 return Error("Tag not found!");
-            tag.Name = request.Name;
+            tag.Name = request.Name?.Trim();
             _db.Tags.Update(tag);
             await _db.SaveChangesAsync(cancellationToken);
             return Success("Tag updated successfully.", tag.Id);

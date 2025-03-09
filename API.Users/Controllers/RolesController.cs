@@ -24,7 +24,7 @@ namespace API.Users.Controllers
         }
 
         // GET: api/Roles
-        [HttpGet, AllowAnonymous]
+        [HttpGet]
         public async Task<IActionResult> Get()
         {
             try
@@ -43,7 +43,7 @@ namespace API.Users.Controllers
         }
 
         // GET: api/Roles/5
-        [HttpGet("{id}"), AllowAnonymous]
+        [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             try

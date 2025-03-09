@@ -24,7 +24,7 @@ namespace APP.Users.Features.Roles
                 return Error("Role with the same name exists!");
             var role = new Role()
             {
-                Name = request.Name
+                Name = request.Name?.Trim()
             };
             _db.Roles.Add(role);
             await _db.SaveChangesAsync(cancellationToken);

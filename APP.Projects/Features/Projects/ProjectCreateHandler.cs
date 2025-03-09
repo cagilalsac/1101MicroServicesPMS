@@ -35,9 +35,9 @@ namespace APP.Projects.Features.Projects
                 return Error("Project with the same name exists!");
             var project = new Project()
             {
-                Description = request.Description,
-                Name = request.Name,
-                Url = request.Url,
+                Description = request.Description?.Trim(),
+                Name = request.Name?.Trim(),
+                Url = request.Url?.Trim(),
                 Version = request.Version,
                 TagIds = request.TagIds
             };

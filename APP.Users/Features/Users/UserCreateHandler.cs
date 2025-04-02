@@ -1,7 +1,9 @@
 ﻿using APP.Users.Domain;
 using CORE.APP.Features;
+using CORE.APP.Repositories;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace APP.Users.Features.Users
 {
@@ -30,15 +32,15 @@ namespace APP.Users.Features.Users
         public List<int> SkillIds { get; set; }
     }
 
-    public class UserCreateHandler : UsersDbHandler, IRequestHandler<UserCreateRequest, CommandResponse>
+    public class UserCreateHandler : RepoHandler<User>, IRequestHandler<UserCreateRequest, CommandResponse>
     {
-        public UserCreateHandler(UsersDb db) : base(db)
+        public UserCreateHandler(IRepo<User> repo, CultureInfo cultureInfo = null) : base(repo, cultureInfo)
         {
         }
 
         public async Task<CommandResponse> Handle(UserCreateRequest request, CancellationToken cancellationToken)
         {
-            if (_db.Users.Any(u => u.UserName == request.UserName || (u.Name == request.Name && u.Surname == request.Surname)))
+            if (_repo.Exists(u => u.UserName == request.UserName || (u.Name == request.Name && u.Surname == request.Surname)))
                 return Error("User with the same user name or full name exists!");
             var user = new User()
             {
@@ -51,8 +53,7 @@ namespace APP.Users.Features.Users
                 RegistrationDate = request.RegistrationDate,
                 SkillIds = request.SkillIds
             };
-            _db.Users.Add(user);
-            await _db.SaveChangesAsync(cancellationToken);
+            await _repo.Create(user);
             return Success("User created successfully.", user.Id);
         }
     }

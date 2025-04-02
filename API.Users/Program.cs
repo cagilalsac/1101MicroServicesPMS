@@ -1,6 +1,7 @@
 using APP.Users;
-using APP.Users.Features;
 using APP.Users.Domain;
+using CORE.APP.Domain;
+using CORE.APP.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +15,15 @@ builder.AddServiceDefaults();
 // Add services to the container.
 // IoC:
 var connectionString = builder.Configuration.GetConnectionString(nameof(UsersDb));
-builder.Services.AddDbContext<UsersDb>(options => options.UseSqlServer(connectionString));
-builder.Services.AddMediatR(config => config.RegisterServicesFromAssembly(typeof(UsersDbHandler).Assembly));
+builder.Services.AddDbContext<IDb, UsersDb>(options => options.UseSqlServer(connectionString));
+builder.Services.AddScoped<IRepo<User>, Repo<User>>();
+builder.Services.AddScoped<IRepo<Role>, Repo<Role>>();
+builder.Services.AddScoped<IRepo<Skill>, Repo<Skill>>();
+builder.Services.AddScoped<IRepo<UserSkill>, Repo<UserSkill>>();
+foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+{
+    builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblies(assembly));
+}
 
 // API:
 builder.Services.Configure<ApiBehaviorOptions>(options =>

@@ -1,5 +1,6 @@
 ﻿using APP.Users.Domain;
 using CORE.APP.Features;
+using CORE.APP.Repositories;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
@@ -12,22 +13,21 @@ namespace APP.Users.Features.Roles
         public string Name { get; set; }
     }
 
-    public class RoleCreateHandler : UsersDbHandler, IRequestHandler<RoleCreateRequest, CommandResponse>
+    public class RoleCreateHandler : RepoHandler<Role>, IRequestHandler<RoleCreateRequest, CommandResponse>
     {
-        public RoleCreateHandler(UsersDb db) : base(db)
+        public RoleCreateHandler(IRepo<Role> repo) : base(repo)
         {
         }
 
         public async Task<CommandResponse> Handle(RoleCreateRequest request, CancellationToken cancellationToken)
         {
-            if (_db.Roles.Any(r => r.Name == request.Name))
+            if (_repo.Exists(r => r.Name == request.Name))
                 return Error("Role with the same name exists!");
             var role = new Role()
             {
                 Name = request.Name?.Trim()
             };
-            _db.Roles.Add(role);
-            await _db.SaveChangesAsync(cancellationToken);
+            await _repo.Create(role);
             return Success("Role created successfully.", role.Id);
         }
     }

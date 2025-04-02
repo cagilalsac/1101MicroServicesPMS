@@ -1,9 +1,11 @@
 ﻿using APP.Users.Domain;
 using CORE.APP.Features;
+using CORE.APP.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
@@ -30,15 +32,15 @@ namespace APP.Users.Features.Users
         }
     }
 
-    public class TokenCreateHandler : UsersDbHandler, IRequestHandler<TokenCreateRequest, TokenCreateResponse>
+    public class TokenCreateHandler : RepoHandler<User>, IRequestHandler<TokenCreateRequest, TokenCreateResponse>
     {
-        public TokenCreateHandler(UsersDb db) : base(db)
+        public TokenCreateHandler(IRepo<User> repo, CultureInfo cultureInfo = null) : base(repo, cultureInfo)
         {
         }
 
         public async Task<TokenCreateResponse> Handle(TokenCreateRequest request, CancellationToken cancellationToken)
         {
-            var user = await _db.Users.Include(u => u.Role)
+            var user = await _repo.Query().Include(u => u.Role)
                 .SingleOrDefaultAsync(u => u.UserName == request.UserName && u.Password == request.Password && u.IsActive);
             if (user is null)
                 return new TokenCreateResponse(false, "Active user with the user name and password not found!");

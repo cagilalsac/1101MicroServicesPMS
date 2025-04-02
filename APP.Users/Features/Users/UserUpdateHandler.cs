@@ -1,12 +1,13 @@
 ﻿using APP.Users.Domain;
 using CORE.APP.Features;
+using CORE.APP.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace APP.Users.Features.Users
 {
-	public class UserUpdateRequest : Request, IRequest<CommandResponse>
+    public class UserUpdateRequest : Request, IRequest<CommandResponse>
     {
         [Required]
         [StringLength(30, MinimumLength = 3)]
@@ -31,20 +32,23 @@ namespace APP.Users.Features.Users
         public List<int> SkillIds { get; set; }
     }
 
-    public class UserUpdateHandler : UsersDbHandler, IRequestHandler<UserUpdateRequest, CommandResponse>
+    public class UserUpdateHandler : RepoHandler<User>, IRequestHandler<UserUpdateRequest, CommandResponse>
     {
-        public UserUpdateHandler(UsersDb db) : base(db)
+        private readonly IRepo<UserSkill> _userSkillRepo;
+
+        public UserUpdateHandler(IRepo<User> repo, IRepo<UserSkill> userSkillRepo, CultureInfo cultureInfo = null) : base(repo, cultureInfo)
         {
+            _userSkillRepo = userSkillRepo;
         }
 
         public async Task<CommandResponse> Handle(UserUpdateRequest request, CancellationToken cancellationToken)
         {
-            if (_db.Users.Any(u => u.Id != request.Id && (u.UserName == request.UserName || (u.Name == request.Name && u.Surname == request.Surname))))
+            if (_repo.Exists(u => u.Id != request.Id && (u.UserName == request.UserName || (u.Name == request.Name && u.Surname == request.Surname))))
                 return Error("User with the same user name or full name exists!");
-            var user = _db.Users.Include(u => u.UserSkills).SingleOrDefault(u => u.Id == request.Id);
+            var user = _repo.GetItem(request.Id);
             if (user is null)
                 return Error("User not found!");
-            _db.UserSkills.RemoveRange(user.UserSkills);
+            await _userSkillRepo.Delete(us => us.UserId == request.Id);
             user.IsActive = request.IsActive;
             user.Name = request.Name?.Trim();
             user.Password = request.Password;
@@ -53,8 +57,7 @@ namespace APP.Users.Features.Users
             user.UserName = request.UserName;
             user.RegistrationDate = request.RegistrationDate;
             user.SkillIds = request.SkillIds;
-            _db.Users.Update(user);
-            await _db.SaveChangesAsync(cancellationToken);
+            await _repo.Update(user);
             return Success("User updated successfully.", user.Id);
         }
     }

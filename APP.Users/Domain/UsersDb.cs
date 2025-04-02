@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CORE.APP.Domain;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 namespace APP.Users.Domain
 {
-    public class UsersDb : DbContext
+    public class UsersDb : DbContext, IDb
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }

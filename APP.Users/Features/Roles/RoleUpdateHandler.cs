@@ -1,33 +1,33 @@
 ﻿using APP.Users.Domain;
 using CORE.APP.Features;
+using CORE.APP.Repositories;
 using MediatR;
 using System.ComponentModel.DataAnnotations;
 
 namespace APP.Users.Features.Roles
 {
-	public class RoleUpdateRequest : Request, IRequest<CommandResponse>
+    public class RoleUpdateRequest : Request, IRequest<CommandResponse>
     {
         [Required]
         [StringLength(10)]
         public string Name { get; set; }
     }
 
-    public class RoleUpdateHandler : UsersDbHandler, IRequestHandler<RoleUpdateRequest, CommandResponse>
+    public class RoleUpdateHandler : RepoHandler<Role>, IRequestHandler<RoleUpdateRequest, CommandResponse>
     {
-        public RoleUpdateHandler(UsersDb db) : base(db)
+        public RoleUpdateHandler(IRepo<Role> repo) : base(repo)
         {
         }
 
         public async Task<CommandResponse> Handle(RoleUpdateRequest request, CancellationToken cancellationToken)
         {
-            if (_db.Roles.Any(r => r.Id != request.Id && r.Name == request.Name))
+            if (_repo.Exists(r => r.Id != request.Id && r.Name == request.Name))
                 return Error("Role with the same name exists!");
-            var role = _db.Roles.Find(request.Id);
+            var role = _repo.GetItem(request.Id);
             if (role is null)
                 return Error("Role not found!");
             role.Name = request.Name?.Trim();
-            _db.Roles.Update(role);
-            await _db.SaveChangesAsync(cancellationToken);
+            await _repo.Update(role);
             return Success("Role updated successfully.", role.Id);
         }
     }

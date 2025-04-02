@@ -1,28 +1,31 @@
 ﻿using APP.Users.Domain;
 using CORE.APP.Features;
+using CORE.APP.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace APP.Users.Features.Users
 {
-	public class UserDeleteRequest : Request, IRequest<CommandResponse>
+    public class UserDeleteRequest : Request, IRequest<CommandResponse>
     {
     }
 
-    public class UserDeleteHandler : UsersDbHandler, IRequestHandler<UserDeleteRequest, CommandResponse>
+    public class UserDeleteHandler : RepoHandler<User>, IRequestHandler<UserDeleteRequest, CommandResponse>
     {
-        public UserDeleteHandler(UsersDb db) : base(db)
+        private readonly IRepo<UserSkill> _userSkillRepo;
+
+        public UserDeleteHandler(IRepo<User> repo, IRepo<UserSkill> userSkillRepo, CultureInfo cultureInfo = null) : base(repo, cultureInfo)
         {
+            _userSkillRepo = userSkillRepo;
         }
 
         public async Task<CommandResponse> Handle(UserDeleteRequest request, CancellationToken cancellationToken)
         {
-            var user = _db.Users.Include(u => u.UserSkills).SingleOrDefault(u => u.Id == request.Id);
+            var user = _repo.GetItem(request.Id);
             if (user is null)
                 return Error("User not found!");
-            _db.UserSkills.RemoveRange(user.UserSkills);
-            _db.Users.Remove(user);
-            await _db.SaveChangesAsync(cancellationToken);
+            await _userSkillRepo.Delete(us => us.UserId == request.Id);
+            await _repo.Delete(request.Id);
             return Success("User deleted successfully", user.Id);
         }
     }

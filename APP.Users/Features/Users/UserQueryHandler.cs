@@ -1,8 +1,10 @@
 ﻿using APP.Users.Domain;
 using APP.Users.Features.Skills;
 using CORE.APP.Features;
+using CORE.APP.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace APP.Users.Features.Users
 {
@@ -27,15 +29,15 @@ namespace APP.Users.Features.Users
         public List<SkillQueryResponse> Skills { get; set; }
     }
 
-    public class UserQueryHandler : UsersDbHandler, IRequestHandler<UserQueryRequest, IQueryable<UserQueryResponse>>
+    public class UserQueryHandler : RepoHandler<User>, IRequestHandler<UserQueryRequest, IQueryable<UserQueryResponse>>
     {
-        public UserQueryHandler(UsersDb db) : base(db)
+        public UserQueryHandler(IRepo<User> repo, CultureInfo cultureInfo = null) : base(repo, cultureInfo)
         {
         }
 
         public Task<IQueryable<UserQueryResponse>> Handle(UserQueryRequest request, CancellationToken cancellationToken)
         {
-            var query = _db.Users.Include(u => u.Role).Include(u => u.UserSkills).ThenInclude(us => us.Skill)
+            var query = _repo.Query().Include(u => u.Role).Include(u => u.UserSkills).ThenInclude(us => us.Skill)
                 .OrderBy(u => u.Name).Select(u => new UserQueryResponse()
             {
                 Id = u.Id,

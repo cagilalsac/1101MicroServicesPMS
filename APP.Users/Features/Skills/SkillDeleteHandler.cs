@@ -1,7 +1,8 @@
 ﻿using APP.Users.Domain;
 using CORE.APP.Features;
+using CORE.APP.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace APP.Users.Features.Skills
 {
@@ -9,21 +10,20 @@ namespace APP.Users.Features.Skills
     {
     }
 
-    public class SkillDeleteHandler : UsersDbHandler, IRequestHandler<SkillDeleteRequest, CommandResponse>
+    public class SkillDeleteHandler : RepoHandler<Skill>, IRequestHandler<SkillDeleteRequest, CommandResponse>
     {
-        public SkillDeleteHandler(UsersDb db) : base(db)
+        private readonly IRepo<UserSkill> _userSkillRepo;
+
+        public SkillDeleteHandler(IRepo<Skill> repo, IRepo<UserSkill> userSkillRepo, CultureInfo cultureInfo = null) : base(repo, cultureInfo)
         {
+            _userSkillRepo = userSkillRepo;
         }
 
         public async Task<CommandResponse> Handle(SkillDeleteRequest request, CancellationToken cancellationToken)
         {
-            var skill = _db.Skills.Include(s => s.UserSkills).SingleOrDefault(s => s.Id == request.Id);
-            if (skill is null)
-                return Error("Skill not found!");
-            _db.UserSkills.RemoveRange(skill.UserSkills);
-            _db.Skills.Remove(skill);
-            await _db.SaveChangesAsync(cancellationToken);
-            return Success("Skill deleted successfully", skill.Id);
+            await _userSkillRepo.Delete(us => us.SkillId == request.Id);
+            await _repo.Delete(request.Id);
+            return Success("Skill deleted successfully", request.Id);
         }
     }
 }

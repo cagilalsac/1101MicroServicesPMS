@@ -1,6 +1,7 @@
 ﻿using APP.Users.Domain;
 using APP.Users.Features.Users;
 using CORE.APP.Features;
+using CORE.APP.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
@@ -19,15 +20,15 @@ namespace APP.Users.Features.Roles
         public List<UserQueryResponse> Users { get; set; }
     }
 
-    public class RoleQueryHandler : UsersDbHandler, IRequestHandler<RoleQueryRequest, IQueryable<RoleQueryResponse>>
+    public class RoleQueryHandler : RepoHandler<Role>, IRequestHandler<RoleQueryRequest, IQueryable<RoleQueryResponse>>
     {
-        public RoleQueryHandler(UsersDb db) : base(db)
+        public RoleQueryHandler(IRepo<Role> repo) : base(repo)
         {
         }
 
         public Task<IQueryable<RoleQueryResponse>> Handle(RoleQueryRequest request, CancellationToken cancellationToken)
         {
-            var query = _db.Roles.Include(r => r.Users)
+            var query = _repo.Query().Include(r => r.Users)
                 .OrderBy(r => r.Name).Select(r => new RoleQueryResponse()
             {
                 Id = r.Id,
